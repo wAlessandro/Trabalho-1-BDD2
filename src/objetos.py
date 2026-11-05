@@ -151,16 +151,12 @@ class ObjetoAcessoDados:
             );
         """)
         self.conexao.commit()
-
-
 class Usuario:
     def __init__(self, id_usuario: int, nome: str, email: str, senha: str):
         self.id_usuario: int = id_usuario
         self.nome: str = nome
         self.email: str = email
         self.senha: str = senha
-
-
 class Endereco:
     def __init__(self, id_endereco: int, id_usuario: int, rua: str, numero: str, bairro: str, cidade: str, estado: str, cep: str):
         self.id_endereco: int = id_endereco
@@ -171,8 +167,6 @@ class Endereco:
         self.cidade: str = cidade
         self.estado: str = estado
         self.cep: str = cep
-
-
 class Animal:
     def __init__(self, id_animal: int, nome: str, especie: str, idade: int, sexo: str, status: str ="Disponível"):
         self.id_animal: int = id_animal
@@ -181,8 +175,6 @@ class Animal:
         self.idade: int = idade
         self.sexo: str = sexo
         self.status: str = status
-
-
 class Doacao:
     def __init__(self, id_doacao: int, id_usuario: int, id_animal: int, valor: float, data_doacao=None):
         self.id_doacao: int = id_doacao
@@ -190,16 +182,12 @@ class Doacao:
         self.id_animal: int = id_animal
         self.valor: float = valor
         self.data_doacao = data_doacao or date.today().isoformat()
-
-
 class Adocao:
     def __init__(self, id_adocao, id_usuario, id_animal, data_adocao=None):
         self.id_adocao = id_adocao
         self.id_usuario = id_usuario
         self.id_animal = id_animal
         self.data_adocao: str = data_adocao or date.today().isoformat()
-
-
 class ControladorSistema:
     def __init__(self, banco_dados):
         self.banco_dados = banco_dados
@@ -273,7 +261,6 @@ class ControladorSistema:
 
     def listarDoacoes(self) -> list:
         return self.banco_dados.consultar("Doacao")
-
 
 if __name__ == "__main__":
     banco = ObjetoAcessoDados()
