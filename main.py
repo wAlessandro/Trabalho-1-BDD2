@@ -1,4 +1,4 @@
-from src.objetos import ObjetoAcessoDados, ControladorSistema
+from objetos import ObjetoAcessoDados, ControladorSistema
 
 banco = ObjetoAcessoDados()
 sistema = ControladorSistema(banco)
@@ -25,39 +25,41 @@ if input("Deseja cadastrar um novo usuário? (s/n): ").lower() == "s":
         input("Senha: ")
     )
     print("\n     Usuário Cadastrado!    ")
-
-
 print("\n---- INICIAR SESSAO ----")
 email = input("Email: ")
+inicio = sistema.iniciarSessao(email, input("Senha: "))
 
-if sistema.iniciarSessao(email, input("Senha: ")):
-
-    usuario: dict = [
-        usuario for usuario in banco.consultar("Usuario")
-        if usuario["email"] == email
-    ][0]
-
-    print(f"\nBem-vindo(a), {usuario['nome']}!")
-
-    if [
-        endereco for endereco in banco.consultar("Endereco")
-        if endereco["id_usuario"] == usuario["id_usuario"]
-    ] == []:
-
-        print("\n     Cadastrar seu Endereço     ")
-
-        sistema.cadastrarEndereco(
-            usuario["id_usuario"],
-            input("Rua: "),
-            input("Número: "),
-            input("Bairro: "),
-            input("Cidade: "),
-            input("Estado: "),
-            input("CEP: ")
-        )
-
-
-    while True:
+while True:
+    if  inicio is False:
+        if input("\nUsuario não encontrado. Deseja tentar novamente?(s/n)").lower() == "n":
+            break
+        else:
+            email = input("Email: ")
+            inicio = sistema.iniciarSessao(email, input("Senha: "))
+    else:
+        usuario: dict = [
+            usuario for usuario in banco.consultar("Usuario")
+            if usuario["email"] == email
+        ][0]
+    
+        print(f"\nBem-vindo(a), {usuario['nome']}!")
+    
+        if [
+            endereco for endereco in banco.consultar("Endereco")
+            if endereco["id_usuario"] == usuario["id_usuario"]
+        ] == []:
+    
+            print("\n     Cadastrar seu Endereço     ")
+    
+            sistema.cadastrarEndereco(
+                usuario["id_usuario"],
+                input("Rua: "),
+                input("Número: "),
+                input("Bairro: "),
+                input("Cidade: "),
+                input("Estado: "),
+                input("CEP: ")
+            )
 
         print("\n===== MENU =====")
         print("1 - Listar animais disponíveis")
@@ -83,9 +85,6 @@ if sistema.iniciarSessao(email, input("Senha: ")):
             print("\nID Nome Espécie Idade Sexo Status")
             print(*animais)
 
-            input("<")
-
-
         elif opcao == "2":
 
             print("\n......Realizar Doação Monetária......")
@@ -109,10 +108,6 @@ if sistema.iniciarSessao(email, input("Senha: ")):
             )
 
             print("\nDoação realizada com sucesso!")
-
-            input("<")
-
-
         elif opcao == "3":
 
             print("\n......Requisitar Adoção......")
@@ -138,10 +133,6 @@ if sistema.iniciarSessao(email, input("Senha: ")):
 
             print("\nRequisição de adoção realizada com sucesso!")
             print("\nAguarde a análise do seu pedido. Você será notificado(a) por e-mail.")
-
-            input("<")
-
-
         elif opcao == "4":
 
             print("\n===== MINHAS REQUISIÇÕES DE ADOÇÃO =====")
@@ -197,16 +188,10 @@ if sistema.iniciarSessao(email, input("Senha: ")):
                         f'\nValor: R$ {doacao["valor"]}'
                         f'\nData da doação: {doacao["data_doacao"]}'
                     )
-
-            input("\n<")
-
-
         elif opcao == "0":
             break
-
-
         else:
             print("Opção inválida!")
-
+        input("\n<")
 
 banco.desconectar()
